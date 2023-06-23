@@ -5,7 +5,7 @@ const SnackTable = () => {
   const { filterObj, dispatch } = UseFilters();
   return (
     <div>
-      <h1 className="bolder text-[6rem] m-4 underline">Snack Table</h1>
+      <h1 className="bolder text-[3rem] m-4 underline">Snack Table</h1>
       <input
         onChange={(event) =>
           dispatch({ type: "search", payload: event.target.value, col: 0 })
@@ -57,7 +57,12 @@ const SnackTable = () => {
             >
               Calories
             </th>
-            <th className="hover:cursor-pointer hover:underline hover:text-orange-500">
+            <th
+              className="hover:cursor-pointer hover:underline hover:text-orange-500"
+              onClick={() =>
+                dispatch({ type: "sort", payload: "ingredients", col: 5 })
+              }
+            >
               Ingredients
             </th>
           </tr>

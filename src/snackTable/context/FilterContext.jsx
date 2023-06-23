@@ -26,28 +26,33 @@ const FilterContext = ({ children }) => {
       }
 
       case "sort": {
-        console.log("here in sort", type, payload, col);
-        let newSnacks = [...acc.snacksToShow];
-        newSnacks.sort((a, b) => a[payload] - b[payload]);
         return {
           ...acc,
           snacksToShow: [...acc.snacks].sort((a, b) =>
-           ( col === 0 || col === 3 || col === 4)
+            col === 0 || col === 3 || col === 4
               ? acc.sortBy[col]
                 ? b[payload] - a[payload]
                 : a[payload] - b[payload]
-              : (col === 2)
+              : col === 2
               ? acc.sortBy[col]
                 ? Number(b[payload].slice(0, b[payload].length - 1)) -
                   Number(a[payload].slice(0, a[payload].length - 1))
                 : Number(a[payload].slice(0, a[payload].length - 1)) -
                   Number(b[payload].slice(0, b[payload].length - 1))
-              : (col === 1)
+              : col === 1
               ? acc.sortBy[col]
                 ? a[payload] > b[payload]
                   ? -1
                   : 1
                 : a[payload] > b[payload]
+                ? 1
+                : -1
+              : col === 5
+              ? acc.sortBy[col]
+                ? a[payload][0] > b[payload][0]
+                  ? -1
+                  : 1
+                : a[payload][0] > b[payload][0]
                 ? 1
                 : -1
               : ""
