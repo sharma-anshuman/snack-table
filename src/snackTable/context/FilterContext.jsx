@@ -7,7 +7,7 @@ const FilterContext = ({ children }) => {
   const filterHandler = (acc, { type, payload, col }) => {
     switch (type) {
       case "search": {
-        console.log('here');
+        console.log("here");
         return {
           ...acc,
           searchQuery: payload,
@@ -15,7 +15,10 @@ const FilterContext = ({ children }) => {
             ({ product_name: product, ingredients }) =>
               product.toLowerCase().includes(payload.toLowerCase()) ||
               ingredients.reduce(
-                (flag, item) => (item.toLowerCase().includes(payload.toLowerCase()) ? true : flag),
+                (flag, item) =>
+                  item.toLowerCase().includes(payload.toLowerCase())
+                    ? true
+                    : flag,
                 false
               )
           ),
@@ -23,13 +26,35 @@ const FilterContext = ({ children }) => {
       }
 
       case "sort": {
-        console.log("here in sort");
+        console.log("here in sort", type, payload, col);
+        let newSnacks = [...acc.snacksToShow];
+        newSnacks.sort((a, b) => a[payload] - b[payload]);
         return {
           ...acc,
           snacksToShow: [...acc.snacks].sort((a, b) =>
-            acc.sortBy[col] ? b[payload] - a[payload] : a[payload] - b[payload]
+            col === 5
+              ? ""
+              : col === 0 || col === 3 || col === 4
+              ? acc.sortBy[col]
+                ? b[payload] - a[payload]
+                : a[payload] - b[payload]
+              : col === 2
+              ? acc.sortBy[col]
+                ? Number(b[payload].slice(0, b[payload].length - 1)) -
+                  Number(a[payload].slice(0, a[payload].length - 1))
+                : Number(a[payload].slice(0, a[payload].length - 1)) -
+                  Number(b[payload].slice(0, b[payload].length - 1))
+              : acc.sortBy[col]
+              ? a > b
+                ? -1
+                : 1
+              : a > b
+              ? 1
+              : -1
           ),
-          sortBy: [...acc.map((flag, idx) => (idx === col ? !flag : flag))],
+          sortBy: [
+            ...acc.sortBy.map((flag, idx) => (idx === col ? !flag : flag)),
+          ],
         };
       }
     }
