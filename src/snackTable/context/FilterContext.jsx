@@ -32,25 +32,25 @@ const FilterContext = ({ children }) => {
         return {
           ...acc,
           snacksToShow: [...acc.snacks].sort((a, b) =>
-            col === 5
-              ? ""
-              : col === 0 || col === 3 || col === 4
+           ( col === 0 || col === 3 || col === 4)
               ? acc.sortBy[col]
                 ? b[payload] - a[payload]
                 : a[payload] - b[payload]
-              : col === 2
+              : (col === 2)
               ? acc.sortBy[col]
                 ? Number(b[payload].slice(0, b[payload].length - 1)) -
                   Number(a[payload].slice(0, a[payload].length - 1))
                 : Number(a[payload].slice(0, a[payload].length - 1)) -
                   Number(b[payload].slice(0, b[payload].length - 1))
-              : acc.sortBy[col]
-              ? a > b
-                ? -1
-                : 1
-              : a > b
-              ? 1
-              : -1
+              : (col === 1)
+              ? acc.sortBy[col]
+                ? a[payload] > b[payload]
+                  ? -1
+                  : 1
+                : a[payload] > b[payload]
+                ? 1
+                : -1
+              : ""
           ),
           sortBy: [
             ...acc.sortBy.map((flag, idx) => (idx === col ? !flag : flag)),
